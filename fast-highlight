@@ -316,7 +316,12 @@ typeset -ga ZLAST_COMMANDS
     # falling through to the $() below, incurring a fork.  (Issue #354.)
     #
     # The second disjunct mimics the isrelative() C call from the zsh bug.
-    elif [[ $1 != */* || ${+ZSH_ARGZERO} = "1" ]] && ! builtin type -w -- $1 >/dev/null 2>&1; then
+    #
+    # Note by oHaiyang:
+    # Not sure why `${+ZSH_ARGZERO} = "1"`, because it's alwyas true in my test cases
+    # this make type -w always be executed, which is very slow in WSL2
+    # elif [[ $1 != */* || ${+ZSH_ARGZERO} = "1" ]] && ! builtin type -w -- $1 >/dev/null 2>&1; then
+    else
       REPLY=none
     fi
   fi
